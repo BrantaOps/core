@@ -28,10 +28,20 @@ export class HistoryService {
     }
 
     private async load(): Promise<void> {
-        const history = await window.electron.retrieveData('history') as ClipboardItem[];
+        const history = (await window.electron.retrieveData('history')) as ClipboardItem[];
+
+        var isMissingDate = history.some((h) => h.date === undefined);
+
+        if (isMissingDate) {
+            history.forEach((h) => (h.date ??= new Date()));
+        }
 
         this._history = history;
-        this.update();
+        if (isMissingDate) {
+            this.save();
+        } else {
+            this.update();
+        }
     }
 
     private async save() {
