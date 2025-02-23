@@ -1,5 +1,5 @@
 import { Address, AddressType } from "../../src/app/shared/models/address";
-import { AddressClipboardItem } from "../../src/app/shared/models/clipboard-item";
+import { AddressClipboardItem, createAddressClipboardItem } from "../../src/app/shared/models/clipboard-item";
 import { ExtendedPublicKey, PolicyType, Wallet } from "../../src/app/shared/models/wallet.model";
 
 const bitcoin = require('bitcoinjs-lib');
@@ -145,14 +145,11 @@ function singleSig(wallet: Wallet, address: string, account: number, i: number, 
         return null;
     }
 
-    return {
-        name: 'Bitcoin Address',
-        value: address,
-        address: address,
-        wallet: wallet,
+    return createAddressClipboardItem({
+        address,
+        wallet,
         derivationPath: `${account}/${i}`,
-        private: false
-    };
+    });
 }
 
 function toHex(key: ExtendedPublicKey, account: number, i: number, bip32: any) {
@@ -172,14 +169,11 @@ function multiSig(wallet: Wallet, address: string, account: number, i: number, b
         return null;
     }
 
-    return {
-        name: 'Bitcoin Address',
-        value: address,
-        address: address,
-        wallet: wallet,
+    return createAddressClipboardItem({
+        address,
+        wallet,
         derivationPath: `${account}/${i}`,
-        private: false
-    };
+    });
 }
 
 export function verifyAddress(wallets: Wallet[], address: string): AddressClipboardItem | null {
