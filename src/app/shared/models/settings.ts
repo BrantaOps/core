@@ -8,7 +8,9 @@ export interface Settings {
 
 export enum ClipboardHistoryRolloffType {
     Never = 'Never',
-    SixtyDays = '60 Days'
+    OneWeek = '1 week',
+    FourWeek = '4 weeks',
+    ThreeMonths = '3 months'
 }
 
 export enum BitcoinUnitType {

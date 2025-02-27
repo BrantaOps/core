@@ -4,6 +4,7 @@ import { ClipboardItem } from '../models/clipboard-item';
 import { ClipboardService } from './clipboard.service';
 import { SettingsService } from './settings.service';
 import { ClipboardHistoryRolloffType } from '../models/settings';
+import { sub, subMonths, subWeeks } from 'date-fns';
 
 @Injectable({
     providedIn: 'root'
@@ -49,23 +50,33 @@ export class HistoryService {
             history.forEach((h) => (h.date ??= new Date()));
         }
 
-        switch (this.settingsService.settings().clipboardHistory.rolloffType) {
-            case ClipboardHistoryRolloffType.SixtyDays:
-                const today = new Date();
-                const sixtyDaysAgo = new Date(today);
-                sixtyDaysAgo.setDate(today.getDate() - 60);
-                history = history.filter((h) => {
-                    return new Date(h.date) >= sixtyDaysAgo;
-                });
-                break;
-            case ClipboardHistoryRolloffType.Never:
-            default:
-                break;
+        var filterDate = this.getDateFilter();
+
+        if (filterDate) {
+            history = history.filter((h) => {
+                return new Date(h.date) >= filterDate!;
+            });
         }
 
         this._history = history;
 
         this.save();
+    }
+
+    private getDateFilter(): Date | null {
+        const today = new Date();
+
+        switch (this.settingsService.settings().clipboardHistory.rolloffType) {
+            case ClipboardHistoryRolloffType.OneWeek:
+                return subWeeks(today, 1);
+            case ClipboardHistoryRolloffType.FourWeek:
+                return subWeeks(today, 4);
+            case ClipboardHistoryRolloffType.ThreeMonths:
+                return subMonths(today, 3);
+            case ClipboardHistoryRolloffType.Never:
+            default:
+                return null;
+        }
     }
 
     private async save() {

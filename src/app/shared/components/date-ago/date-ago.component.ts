@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { DateAgoPipe } from '../../pipes/date-ago.pipe';
 
 @Component({
@@ -6,7 +6,7 @@ import { DateAgoPipe } from '../../pipes/date-ago.pipe';
     imports: [DateAgoPipe],
     template: `{{ value | dateAgo: currentTime }}`
 })
-export class DateAgoComponent {
+export class DateAgoComponent implements OnInit, OnDestroy {
     @Input() value: Date;
     currentTime: Date = new Date();
 
