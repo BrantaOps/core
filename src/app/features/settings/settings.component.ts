@@ -10,7 +10,7 @@ import { ClipboardService } from '../../shared/services/clipboard.service';
 import { HistoryService } from '../../shared/services/history.service';
 import { SettingsService } from '../../shared/services/settings.service';
 import { MatSelectModule } from '@angular/material/select';
-import { BitcoinUnitType } from '../../shared/models/settings';
+import { BitcoinUnitType, ClipboardHistoryRolloffType } from '../../shared/models/settings';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
@@ -26,6 +26,8 @@ export class SettingsComponent {
     developerModeTooltip = "Only check this if you're a developer. Enables staging environment.";
 
     BitcoinUnitTypes = Object.values(BitcoinUnitType);
+
+    ClipboardHistoryRolloffTypes = Object.values(ClipboardHistoryRolloffType);
 
     constructor(
         private settingsService: SettingsService,
@@ -46,7 +48,8 @@ export class SettingsComponent {
                 lightningAddress: new FormControl(settings.generalNotifications.lightningAddress)
             }),
             clipboardHistory: new FormGroup({
-                show: new FormControl(settings.clipboardHistory.show)
+                show: new FormControl(settings.clipboardHistory.show),
+                rolloffType: new FormControl(settings.clipboardHistory.rolloffType)
             }),
             developerMode: new FormControl(settings.developerMode)
         });
