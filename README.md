@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/BrantaOps/Assets/blob/main/Logos/logo-cropped-white.png?raw=true">
-    <source media="(prefers-color-scheme: light)" srcset="https://github.com/BrantaOps/Assets/blob/main/Logos/logo-cropped-black.png?raw=true">
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/BrantaOps/Assets/blob/main/svg/logo-white.svg?raw=true">
+    <source media="(prefers-color-scheme: light)" srcset="https://github.com/BrantaOps/Assets/blob/main/svg/logo-black.svg?raw=true">
     <img alt="Branta" src="Branta/Assets/goldblackcropped.jpg" width="500">
   </picture>
 </p>
