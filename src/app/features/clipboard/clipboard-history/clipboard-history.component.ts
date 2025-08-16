@@ -1,15 +1,16 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ExpandableTextComponent } from '../../../shared/components/expandable-text/expandable-text.component';
 import { AddressClipboardItem, ClipboardItem, PaymentClipboardItem } from '../../../shared/models/clipboard-item';
-import { getIcon } from '../../../shared/models/wallet.model';
 import { BaseClipboardComponent } from '../base-clipboard';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { DateAgoComponent } from '../../../shared/components/date-ago/date-ago.component';
 
 @Component({
     selector: 'app-clipboard-history',
-    imports: [CommonModule, MatButtonModule, MatIconModule, ExpandableTextComponent],
+    imports: [CommonModule, MatButtonModule, MatIconModule, ExpandableTextComponent, DatePipe, DateAgoComponent, MatTooltipModule],
     templateUrl: './clipboard-history.component.html',
     styleUrl: './clipboard-history.component.scss'
 })

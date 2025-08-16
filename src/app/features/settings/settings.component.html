@@ -41,13 +41,23 @@
                 <div class="option">
                     <mat-slide-toggle formControlName="show">Show History</mat-slide-toggle>
                 </div>
+                <div class="option">
+                    <mat-form-field>
+                        <mat-label>Rolloff Clipboard History</mat-label>
+                        <mat-select formControlName="rolloffType">
+                            @for (rolloffType of ClipboardHistoryRolloffTypes; track rolloffType) {
+                                <mat-option [value]="rolloffType">{{ rolloffType }}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <button mat-button color="warn" (click)="onClearHistory()">Clear History</button>
             </div>
-        </div>
-        <div class="section">
-            <div class="option">
-                <mat-slide-toggle formControlName="developerMode">Developer Mode</mat-slide-toggle>
-                <mat-icon class="icon material-symbols-outlined" [matTooltip]="developerModeTooltip" matTooltipPosition="right">help</mat-icon>
+            <div class="section">
+                <div class="option">
+                    <mat-slide-toggle formControlName="developerMode">Developer Mode</mat-slide-toggle>
+                    <mat-icon class="icon material-symbols-outlined" [matTooltip]="developerModeTooltip" matTooltipPosition="right">help</mat-icon>
+                </div>
             </div>
         </div>
     </form>
