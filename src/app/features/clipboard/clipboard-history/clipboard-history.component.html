@@ -3,7 +3,7 @@
     <div class="content">
         @for (item of history; track item) {
             <div class="item">
-                <div class="details">
+                <div class="details-container">
                     <div class="text">
                         <app-expandable-text [text]="item.value" />
                     </div>
@@ -27,9 +27,16 @@
                     </div>
                 }
                 </div>
-                <button mat-icon-button (click)="onCopyClipboard(item.value)" [disabled]="item.value == clipboardContent">
-                    <mat-icon>content_copy</mat-icon>
-                </button>
+                <div class="right">
+                    @if (item.date) {
+                        <div class="date" [matTooltip]="(item.date | date: 'MMM dd, yyyy, h:mm a') ?? ''" matTooltipPosition="left">
+                            <app-date-ago [value]="item.date" />
+                        </div>
+                    }
+                    <button mat-icon-button (click)="onCopyClipboard(item.value)" [disabled]="item.value == clipboardContent">
+                        <mat-icon>content_copy</mat-icon>
+                    </button>
+                </div>
             </div>
         } @if (history.length == 0) {
             <div class="default">

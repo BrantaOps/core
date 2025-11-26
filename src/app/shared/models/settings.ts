@@ -6,6 +6,13 @@ export interface Settings {
     bitcoinUnitType: BitcoinUnitType;
 }
 
+export enum ClipboardHistoryRolloffType {
+    Never = 'Never',
+    OneWeek = '1 week',
+    FourWeek = '4 weeks',
+    ThreeMonths = '3 months'
+}
+
 export enum BitcoinUnitType {
     Sats = 'Sats',
     Bitcoin = 'Bitcoin',
@@ -14,6 +21,7 @@ export enum BitcoinUnitType {
 
 export interface ClipboardHistory {
     show: boolean;
+    rolloffType: ClipboardHistoryRolloffType;
 }
 
 export interface GeneralNotifications {
