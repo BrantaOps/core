@@ -29,6 +29,7 @@
         margin-top: 10px;
         display: flex;
         flex-direction: column;
+        gap: 22px;
     }
 
     .wallet-form {
@@ -116,8 +117,6 @@
 
 ::ng-deep .mat-mdc-tab-body-content {
     .contents {
-        margin-top: 15px;
-
         .form-field {
             width: 100%;
 
