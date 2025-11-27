@@ -22,6 +22,6 @@ export class AppComponent {
     }
 
     onHelp(): void {
-        window.electron.openUrl('https://docs.branta.pro');
+        window.electron.openUrl('https://developer.branta.pro/core');
     }
 }

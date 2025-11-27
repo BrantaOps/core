@@ -207,7 +207,7 @@ function createWindow() {
 
         const contextMenu = Menu.buildFromTemplate([
             { label: 'Open', type: 'normal', click: () => mainWindow.show() },
-            { label: 'Help', type: 'normal', click: () => openUrl('https://docs.branta.pro') },
+            { label: 'Help', type: 'normal', click: () => openUrl('https://developer.branta.pro/core') },
             { label: '', type: 'separator' },
             { label: 'Quit', type: 'normal', click: forceQuit },
             { label: `Version ${packageJson.version}`, type: 'normal', enabled: false }

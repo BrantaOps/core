@@ -8,7 +8,7 @@
 
 Disclaimer: This is pre-release software and may contain bugs or incomplete features. Use at your own risk. Feedback and contributions are welcome!
 
-Read more on our [documentation site.](https://docs.branta.pro/)
+Read more on our [documentation site.](https://developer.branta.pro/core)
 
 <img width="500" alt="Screenshot 2025-01-22 at 1 17 32 PM" src="https://github.com/user-attachments/assets/98bd51a8-46d1-4fbe-9091-3c0c2452c3db" />
 <img width="500" alt="Screenshot 2025-01-22 at 1 19 21 PM" src="https://github.com/user-attachments/assets/616272d3-c085-4f1a-a1dc-3fb2f2cb8124" />
