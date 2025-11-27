@@ -216,7 +216,7 @@ export class WalletFormComponent implements CanComponentDeactivate {
     }
 
     onShareFeedback(): void {
-        window.electron.openUrl('https://branta.pro/uses');
+        window.electron.openUrl('https://branta.pro');
     }
 
     onIconSelectionChange(event: MatSelectChange) {

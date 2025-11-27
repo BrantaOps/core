@@ -16,6 +16,6 @@ export class ClipboardDetailsComponent extends BaseClipboardComponent {
     @Input() clipboardItem: ClipboardItem | null;
 
     onShareFeedback(): void {
-        window.electron.openUrl('https://branta.pro/uses');
+        window.electron.openUrl('https://branta.pro');
     }
 }
