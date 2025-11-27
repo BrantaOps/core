@@ -148,7 +148,6 @@ export class BaseClipboardService {
     private static async queryPayments(value: string, serverService: ServerService): Promise<PaymentClipboardItem | null> {
         try {
             const paymentClipboardItems = await lastValueFrom(serverService.getPayment(value));
-            console.log(paymentClipboardItems);
 
             const paymentClipboardItem = paymentClipboardItems[0];
 
