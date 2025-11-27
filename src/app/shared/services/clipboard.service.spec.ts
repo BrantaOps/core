@@ -1,12 +1,12 @@
+import { of } from 'rxjs';
+import { decodeLightningPayment } from '../../../../app/lib/lightning';
+import { verifyAddress } from '../../../../app/lib/verify-address';
+import { AddressClipboardItem, PaymentClipboardItem } from '../models/clipboard-item';
 import { Settings } from '../models/settings';
-import { ServerService } from './server.service';
 import { Vault } from '../models/vault.model';
 import { PolicyType, Wallet } from '../models/wallet.model';
-import { AddressClipboardItem, PaymentClipboardItem } from '../models/clipboard-item';
-import { verifyAddress } from '../../../../app/lib/verify-address';
-import { decodeLightningPayment } from '../../../../app/lib/lightning';
-import { of } from 'rxjs';
 import { BaseClipboardService } from './base-clipboard.service';
+import { ServerService } from './server.service';
 
 const xpubs = ['xpub6Cbd89HtFkGQMk37HjxjpxB7zCysPUz2VzmSwGZPhH11vVaGZtbGw5pSyFe6Ff8qL8EASUL1WYaExqL2ULGwRd2RJkw3Yx8jU2CTNrZx65X'];
 const npub = 'npub1d4ed5x49d7p24xn63flj4985dc4gpfngdhtqcxpth0ywhm6czxcscfpcq8';
@@ -20,8 +20,8 @@ var serverServiceMock = {
     getPayment: (value: string) => {
         if (['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', lnbc[0]].includes(value)) {
             return of({
-                payment: 'Payment',
-                merchant: 'Branta'
+                destinations: [{ value: 'Payment' }],
+                platform: 'Branta'
             } as PaymentClipboardItem);
         }
 
@@ -165,7 +165,7 @@ describe('ClipboardService getClipboardItem', () => {
         )) as PaymentClipboardItem;
 
         expect(showNotificationMock).toHaveBeenCalledTimes(notificationCount);
-        expect(result?.payment).toBe(paymentValue);
+        expect(result?.destinations[0].value).toBe(paymentValue);
     });
 
     test.each([
@@ -257,7 +257,7 @@ describe('ClipboardService getClipboardItem', () => {
             )) as PaymentClipboardItem;
 
             expect(showNotificationMock).toHaveBeenCalledTimes(notificationCount);
-            expect(result?.payment).toBe(paymentValue);
+            expect(result?.destinations[0].value).toBe(paymentValue);
         }
     );
 });
