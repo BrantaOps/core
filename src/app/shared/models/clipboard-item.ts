@@ -24,9 +24,13 @@ export interface AddressClipboardItem extends ClipboardItem {
     derivationPath: string | null;
 }
 
+export interface PaymentDestination {
+    value: string;
+}
+
 export interface PaymentClipboardItem extends ClipboardItem {
-    payment: string;
-    merchant: string;
+    destinations: PaymentDestination[];
+    platform: string;
     description: string | null;
 }
 

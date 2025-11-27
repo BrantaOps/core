@@ -7,11 +7,11 @@ import {
     createBolt11ClipboardItem,
     createClipboardItem
 } from '../models/clipboard-item';
-import { ExtendedKeyRegExp, NostrPubKeyRegExp, NostrPrivateKeyRegExp, LightningAddressRegExp, isBitcoinAddress } from './regex';
-import { Vault } from '../models/vault.model';
-import { ServerService } from './server.service';
-import { Wallet } from '../models/wallet.model';
 import { Settings } from '../models/settings';
+import { Vault } from '../models/vault.model';
+import { Wallet } from '../models/wallet.model';
+import { ExtendedKeyRegExp, LightningAddressRegExp, NostrPrivateKeyRegExp, NostrPubKeyRegExp, isBitcoinAddress } from './regex';
+import { ServerService } from './server.service';
 
 export class BaseClipboardService {
     public static async getClipboardItem(
@@ -61,7 +61,7 @@ export class BaseClipboardService {
 
                     if (paymentItem) {
                         if (notify) {
-                            await window.electron.showNotification(paymentItem.merchant, paymentItem.description ?? '');
+                            await window.electron.showNotification(paymentItem.platform, paymentItem.description ?? '');
                         }
 
                         return paymentItem;
@@ -126,7 +126,7 @@ export class BaseClipboardService {
 
                 if (paymentItem) {
                     if (settings?.generalNotifications.lightningAddress && notify) {
-                        await window.electron.showNotification(paymentItem.merchant, paymentItem.description ?? '');
+                        await window.electron.showNotification(paymentItem.platform, paymentItem.description ?? '');
                     }
                     return paymentItem;
                 }
@@ -147,10 +147,12 @@ export class BaseClipboardService {
 
     private static async queryPayments(value: string, serverService: ServerService): Promise<PaymentClipboardItem | null> {
         try {
-            const paymentClipboardItem = await lastValueFrom(serverService.getPayment(value));
+            const paymentClipboardItems = await lastValueFrom(serverService.getPayment(value));
 
-            paymentClipboardItem.name = paymentClipboardItem.merchant;
-            paymentClipboardItem.value = paymentClipboardItem.payment;
+            const paymentClipboardItem = paymentClipboardItems[0];
+
+            paymentClipboardItem.name = paymentClipboardItem.platform;
+            paymentClipboardItem.value = value;
 
             return paymentClipboardItem;
         } catch (error) {

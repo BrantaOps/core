@@ -9,7 +9,7 @@ export class BaseClipboardComponent {
     }
 
     isPaymentClipboardItem(item: ClipboardItem): item is PaymentClipboardItem {
-        return 'payment' in item && 'merchant' in item && 'description' in item;
+        return 'destinations' in item && 'platform' in item && 'description' in item;
     }
 
     isBolt11ClipboardItem(item: ClipboardItem): item is Bolt11ClipboardItem {
