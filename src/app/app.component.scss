@@ -7,7 +7,13 @@
         height: 40px;
         -webkit-app-region: drag;
         display: flex;
+        flex-direction: row;
+        align-items: center;
         padding: 0 10px;
+
+        img {
+            height: 18px;
+        }
     }
 
     .app {
