@@ -9,7 +9,7 @@
             @if (isAddressClipboardItem(clipboardItem)) {
                 <div class="item">
                     <div class="title">Address:</div>
-                    <div class="value address">{{ clipboardItem.address }}</div>
+                    <app-expandable-text class="value" [text]="clipboardItem.value" [isAddress]="true" />
                 </div>
                 <div class="item">
                     <div class="title">Wallet:</div>
@@ -35,11 +35,11 @@
             } @else if (isPaymentClipboardItem(clipboardItem)) {
                 <div class="item">
                     <div class="title">Value:</div>
-                    <div class="value">{{ clipboardItem.value }}</div>
+                    <app-expandable-text class="value" [text]="clipboardItem.value" [isAddress]="true" />
                 </div>
                 <div class="item">
-                    <div class="title">Merchant:</div>
-                    <div class="value">{{ clipboardItem.merchant }}</div>
+                    <div class="title">Platform:</div>
+                    <div class="value">{{ clipboardItem.platform }}</div>
                 </div>
                 <div class="item">
                     <div class="title">Description:</div>
@@ -51,7 +51,7 @@
             } @else if (isBolt11ClipboardItem(clipboardItem)) {
                 <div class="item">
                     <div class="title">Value:</div>
-                    <app-expandable-text class="value" [text]="clipboardItem.value" />
+                    <app-expandable-text class="value" [text]="clipboardItem.value" [isAddress]="true" />
                 </div>
                 <div class="item">
                     <div class="title">Amount:</div>
@@ -68,7 +68,7 @@
                     <div class="value">{{ clipboardItem.expiry }}</div>
                 </div>
             } @else {
-                <div class="value" *ngIf="!clipboardItem.private">{{ clipboardItem.value }}</div>
+              <app-expandable-text *ngIf="!clipboardItem.private" class="value" [text]="clipboardItem.value" [isAddress]="true" />
             }
         } @else {
             <div class="default">No Bitcoin/Nostr content detected.</div>

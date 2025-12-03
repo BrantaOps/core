@@ -3,9 +3,9 @@
     <div class="content">
         @for (item of history; track item) {
             <div class="item">
-                <div class="details">
+                <div class="details-container">
                     <div class="text">
-                        <app-expandable-text [text]="item.value" />
+                        <app-expandable-text [text]="item.value" [isAddress]="true" />
                     </div>
                     @if (isAddressClipboardItem(item) && item.wallet) {
                         <div class="details">
@@ -17,8 +17,8 @@
                         <div class="secondary">No wallet found.</div>
                     } @else if (isPaymentClipboardItem(item)) {
                         <div class="details">
-                            <div class="type">Merchant:</div>
-                            <div class="name">{{ item.merchant }}</div>
+                            <div class="type">Platform:</div>
+                            <div class="name">{{ item.platform }}</div>
                         </div>
                 } @else if (isBolt11ClipboardItem(item)) {
                     <div class="details">
@@ -27,9 +27,16 @@
                     </div>
                 }
                 </div>
-                <button mat-icon-button (click)="onCopyClipboard(item.value)" [disabled]="item.value == clipboardContent">
-                    <mat-icon>content_copy</mat-icon>
-                </button>
+                <div class="right">
+                    @if (item.date) {
+                        <div class="date" [matTooltip]="(item.date | date: 'MMM dd, yyyy, h:mm a') ?? ''" matTooltipPosition="left">
+                            <app-date-ago [value]="item.date" />
+                        </div>
+                    }
+                    <button mat-icon-button (click)="onCopyClipboard(item.value)" [disabled]="item.value == clipboardContent">
+                        <mat-icon>content_copy</mat-icon>
+                    </button>
+                </div>
             </div>
         } @if (history.length == 0) {
             <div class="default">

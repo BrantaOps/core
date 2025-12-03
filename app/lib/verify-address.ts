@@ -1,5 +1,5 @@
 import { Address, AddressType } from "../../src/app/shared/models/address";
-import { AddressClipboardItem } from "../../src/app/shared/models/clipboard-item";
+import { AddressClipboardItem, createAddressClipboardItem } from "../../src/app/shared/models/clipboard-item";
 import { ExtendedPublicKey, PolicyType, Wallet } from "../../src/app/shared/models/wallet.model";
 
 const bitcoin = require('bitcoinjs-lib');
@@ -10,34 +10,6 @@ const BIP84 = require('bip84');
 bitcoin.initEccLib(ecc);
 
 const MAX_ACCOUNT = 1;
-
-export function getPrefix(address: string) {
-    if (address.startsWith('1')) {
-        return '1';
-    }
-
-    if (address.startsWith('3')) {
-        return '3';
-    }
-
-    if (address.startsWith('bc1q')) {
-        return 'bc1q';
-    }
-
-    if (address.startsWith('bc1p')) {
-        return 'bc1p';
-    }
-
-    if (address.startsWith('tb1q')) {
-        return 'tb1q';
-    }
-
-    if (address.startsWith('tb1p')) {
-        return 'tb1p';
-    }
-
-    return '';
-}
 
 export function getAllAddresses(wallet: Wallet, i: number): Address[] {
     var bip32 = BIP32Factory(ecc);
@@ -50,12 +22,9 @@ export function getAllAddresses(wallet: Wallet, i: number): Address[] {
         ]
             .map((type) => {
                 var address = getSingleSigAddress(wallet, 0, i, type, bip32);
-                var prefix = getPrefix(address);
 
                 return {
                     value: address,
-                    prefix: prefix,
-                    remainder: address.replace(new RegExp(`^${prefix}`), ''),
                     type: type.toString(),
                     selected: false
                 } as Address;
@@ -64,18 +33,15 @@ export function getAllAddresses(wallet: Wallet, i: number): Address[] {
         return [AddressType.PayToWitnessPublicKeyHash, AddressType.PayToScriptHash]
             .map((type) => {
                 var address = getMultiSigAddress(wallet, 0, i, type, bip32);
-                var prefix = getPrefix(address);
-
                 return {
                     value: address,
-                    prefix: prefix,
-                    remainder: address.replace(new RegExp(`^${prefix}`), ''),
                     type: type.toString(),
                     selected: false
                 } as Address;
             });
     }
 }
+
 
 function getNetwork(wallet: Wallet) {
     return (wallet.keys[0].value.startsWith('tpub')) ? bitcoin.networks.testnet : bitcoin.networks.bitcoin;
@@ -145,14 +111,11 @@ function singleSig(wallet: Wallet, address: string, account: number, i: number, 
         return null;
     }
 
-    return {
-        name: 'Bitcoin Address',
-        value: address,
-        address: address,
-        wallet: wallet,
+    return createAddressClipboardItem({
+        address,
+        wallet,
         derivationPath: `${account}/${i}`,
-        private: false
-    };
+    });
 }
 
 function toHex(key: ExtendedPublicKey, account: number, i: number, bip32: any) {
@@ -172,14 +135,11 @@ function multiSig(wallet: Wallet, address: string, account: number, i: number, b
         return null;
     }
 
-    return {
-        name: 'Bitcoin Address',
-        value: address,
-        address: address,
-        wallet: wallet,
+    return createAddressClipboardItem({
+        address,
+        wallet,
         derivationPath: `${account}/${i}`,
-        private: false
-    };
+    });
 }
 
 export function verifyAddress(wallets: Wallet[], address: string): AddressClipboardItem | null {

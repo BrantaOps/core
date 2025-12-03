@@ -29,6 +29,7 @@
         margin-top: 10px;
         display: flex;
         flex-direction: column;
+        gap: 22px;
     }
 
     .wallet-form {
@@ -79,6 +80,7 @@
             gap: 20px;
             flex-direction: column;
             overflow-y: auto;
+            font-size: 0.9rem;
 
             .address {
                 .value {
@@ -116,8 +118,6 @@
 
 ::ng-deep .mat-mdc-tab-body-content {
     .contents {
-        margin-top: 15px;
-
         .form-field {
             width: 100%;
 

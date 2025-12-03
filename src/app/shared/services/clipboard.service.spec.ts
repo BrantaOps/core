@@ -1,12 +1,12 @@
+import { of } from 'rxjs';
+import { decodeLightningPayment } from '../../../../app/lib/lightning';
+import { verifyAddress } from '../../../../app/lib/verify-address';
+import { AddressClipboardItem, PaymentClipboardItem } from '../models/clipboard-item';
 import { Settings } from '../models/settings';
-import { ServerService } from './server.service';
 import { Vault } from '../models/vault.model';
 import { PolicyType, Wallet } from '../models/wallet.model';
-import { AddressClipboardItem, PaymentClipboardItem } from '../models/clipboard-item';
-import { verifyAddress } from '../../../../app/lib/verify-address';
-import { decodeLightningPayment } from '../../../../app/lib/lightning';
-import { of } from 'rxjs';
 import { BaseClipboardService } from './base-clipboard.service';
+import { ServerService } from './server.service';
 
 const xpubs = ['xpub6Cbd89HtFkGQMk37HjxjpxB7zCysPUz2VzmSwGZPhH11vVaGZtbGw5pSyFe6Ff8qL8EASUL1WYaExqL2ULGwRd2RJkw3Yx8jU2CTNrZx65X'];
 const npub = 'npub1d4ed5x49d7p24xn63flj4985dc4gpfngdhtqcxpth0ywhm6czxcscfpcq8';
@@ -20,8 +20,8 @@ var serverServiceMock = {
     getPayment: (value: string) => {
         if (['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', lnbc[0]].includes(value)) {
             return of({
-                payment: 'Payment',
-                merchant: 'Branta'
+                destinations: [{ value }],
+                platform: 'Branta'
             } as PaymentClipboardItem);
         }
 
@@ -143,11 +143,11 @@ describe('ClipboardService getClipboardItem', () => {
     });
 
     test.each([
-        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', true, true, 'Payment', 1],
-        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', false, true, undefined, 1],
-        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', true, false, 'Payment', 0],
-        ['1HD1cVCJ5ZTgF6Txxxxxxxxxxxxxxxxxxz', true, true, undefined, 1]
-    ])('Payment: %s', async (address: string, checkoutMode: boolean, notify: boolean, paymentValue: string | undefined, notificationCount: number) => {
+        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', true, true, 1],
+        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', false, true, 1],
+        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', true, false, 0],
+        ['1HD1cVCJ5ZTgF6Txxxxxxxxxxxxxxxxxxz', true, true, 1]
+    ])('Payment: %s', async (address: string, checkoutMode: boolean, notify: boolean, notificationCount: number) => {
         const showNotificationMock = jest.spyOn(window.electron, 'showNotification').mockResolvedValue();
 
         var result = (await BaseClipboardService.getClipboardItem(
@@ -165,7 +165,7 @@ describe('ClipboardService getClipboardItem', () => {
         )) as PaymentClipboardItem;
 
         expect(showNotificationMock).toHaveBeenCalledTimes(notificationCount);
-        expect(result?.payment).toBe(paymentValue);
+        expect(result?.value).toBe(address);
     });
 
     test.each([
@@ -226,9 +226,9 @@ describe('ClipboardService getClipboardItem', () => {
             undefined,
             0
         ],
-        ['Lightning address on payment server should show default when checkout is off.', lnbc[0], false, true, true, undefined, 1],
-        ['Lightning address on payment server should show payment when checkout is on.', lnbc[0], true, true, true, 'Payment', 1],
-        ['Lightning address not on payment server should not show payment when checkout is on.', lnbc[1], true, true, true, undefined, 1]
+        ['Lightning address on payment server should show default when checkout is off.', lnbc[0], false, true, true, lnbc[0], 1],
+        ['Lightning address on payment server should show payment when checkout is on.', lnbc[0], true, true, true, lnbc[0], 1],
+        ['Lightning address not on payment server should not show payment when checkout is on.', lnbc[1], true, true, true, lnbc[1], 1]
     ])(
         'Lightning: %s',
         async (
@@ -257,7 +257,7 @@ describe('ClipboardService getClipboardItem', () => {
             )) as PaymentClipboardItem;
 
             expect(showNotificationMock).toHaveBeenCalledTimes(notificationCount);
-            expect(result?.payment).toBe(paymentValue);
+            expect(result?.value).toBe(paymentValue);
         }
     );
 });

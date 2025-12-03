@@ -1,5 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { BitcoinUnitType, Settings } from '../models/settings';
+import { BitcoinUnitType, ClipboardHistoryRolloffType, Settings } from '../models/settings';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +10,8 @@ export class SettingsService {
         bitcoinUnitType: BitcoinUnitType.Sats,
         developerMode: false,
         clipboardHistory: {
-            show: true
+            show: true,
+            rolloffType: ClipboardHistoryRolloffType.Never
         },
         generalNotifications: {
             bitcoinAddress: true,
@@ -24,6 +25,8 @@ export class SettingsService {
     #settings = signal<Settings>(this.defaultSettings);
     settings = computed(this.#settings);
 
+    isLoading = signal<boolean>(true);
+
     private readonly SETTINGS_KEY = 'settings';
 
     constructor() {
@@ -35,6 +38,7 @@ export class SettingsService {
         const parsedSettings: Partial<Settings> = settings ? JSON.parse(settings) : {};
 
         this.#settings.update(() => this.mergeSettings(this.defaultSettings, parsedSettings));
+        this.isLoading.update(() => false);
     }
 
     save(settings: Settings) {

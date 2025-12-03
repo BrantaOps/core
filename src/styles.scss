@@ -9,12 +9,11 @@ $background: #1b1b1b;
 
 $primary-color: #b49145;
 $secondary-color: #466362;
-$success-color: #4AB15E;
-$warn-color: #BA3F1D;
+$success-color: #4ab15e;
+$warn-color: #ba3f1d;
 $error-color: #b15e4a;
 
 $text-gray: #bbbbbb;
-
 
 html,
 body {
@@ -26,7 +25,6 @@ body {
     margin: 0;
     font-family: 'Avenir', sans-serif;
 }
-
 
 @function create-palette($base-color) {
     $hues: (
@@ -81,9 +79,12 @@ $custom-theme: mat.m2-define-dark-theme(
     border-radius: 10px;
 }
 
-
 .address {
     font-family: 'Roboto Mono', monospace;
+}
+
+.text-primary {
+    color: $primary-color;
 }
 
 ::-webkit-scrollbar {

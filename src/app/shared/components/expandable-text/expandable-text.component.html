@@ -1,1 +1,8 @@
-<div (click)="toggle()" [class]="{ 'expandable': isLarge }" class="address" aria-hidden="true">{{ getText() }}</div>
+<div (click)="toggle()" [class]="{ expandable: isLarge }" class="address" aria-hidden="true">
+    @if (isAddress) {
+        <span class="text-primary">{{ getText() | slice: 0 : getPrefixLength() }}</span
+        ><span>{{ getText() | slice: getPrefixLength() }}</span>
+    } @else {
+        {{ getText() }}
+    }
+</div>

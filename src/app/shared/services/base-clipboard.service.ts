@@ -1,10 +1,17 @@
 import { lastValueFrom } from 'rxjs';
-import { AddressClipboardItem, Bolt11ClipboardItem, ClipboardItem, PaymentClipboardItem } from '../models/clipboard-item';
-import { ExtendedKeyRegExp, NostrPubKeyRegExp, NostrPrivateKeyRegExp, LightningAddressRegExp, isBitcoinAddress } from './regex';
-import { Vault } from '../models/vault.model';
-import { ServerService } from './server.service';
-import { Wallet } from '../models/wallet.model';
+import {
+    ClipboardItem,
+    ClipboardItemType,
+    PaymentClipboardItem,
+    createAddressClipboardItem,
+    createBolt11ClipboardItem,
+    createClipboardItem
+} from '../models/clipboard-item';
 import { Settings } from '../models/settings';
+import { Vault } from '../models/vault.model';
+import { Wallet } from '../models/wallet.model';
+import { ExtendedKeyRegExp, LightningAddressRegExp, NostrPrivateKeyRegExp, NostrPubKeyRegExp, isBitcoinAddress } from './regex';
+import { ServerService } from './server.service';
 
 export class BaseClipboardService {
     public static async getClipboardItem(
@@ -20,14 +27,10 @@ export class BaseClipboardService {
                 await window.electron.showNotification('Bitcoin genesis block address copied.', 'We are all Satoshi');
             }
 
-            return {
+            return createAddressClipboardItem({
                 name: 'Bitcoin Address: Genesis Block',
-                value: text,
-                address: text,
-                wallet: null,
-                derivationPath: null,
-                private: false
-            } as AddressClipboardItem;
+                address: text
+            });
         }
 
         if (isBitcoinAddress(text)) {
@@ -58,7 +61,7 @@ export class BaseClipboardService {
 
                     if (paymentItem) {
                         if (notify) {
-                            await window.electron.showNotification(paymentItem.merchant, paymentItem.description ?? '');
+                            await window.electron.showNotification(paymentItem.platform, paymentItem.description ?? '');
                         }
 
                         return paymentItem;
@@ -69,14 +72,9 @@ export class BaseClipboardService {
                     await window.electron.showNotification('New Bitcoin Address in Clipboard', 'Bitcoin Address Detected.');
                 }
 
-                return {
-                    name: 'Bitcoin Address',
-                    value: text,
-                    address: text,
-                    wallet: null,
-                    derivationPath: null,
-                    private: false
-                } as AddressClipboardItem;
+                return createAddressClipboardItem({
+                    address: text
+                });
             }
         }
 
@@ -84,33 +82,36 @@ export class BaseClipboardService {
             if (settings?.generalNotifications.bitcoinPublicKey && notify) {
                 await window.electron.showNotification('Bitcoin Extended Public Key in Clipboard.', 'Sharing can lead to loss of privacy.');
             }
-            return {
+
+            return createClipboardItem({
                 name: 'Extended Public Key',
                 value: text,
-                private: false
-            };
+                type: ClipboardItemType.PublicKey
+            });
         }
 
         if (NostrPubKeyRegExp.test(text)) {
             if (settings?.generalNotifications.nostrPublicKey && notify) {
                 await window.electron.showNotification('Nostr Public Key in Clipboard.', text);
             }
-            return {
+
+            return createClipboardItem({
                 name: 'Nostr Public Key',
                 value: text,
-                private: false
-            };
+                type: ClipboardItemType.PublicKey
+            });
         }
 
         if (NostrPrivateKeyRegExp.test(text)) {
             if (settings?.generalNotifications.nostrPrivateKey && notify) {
                 await window.electron.showNotification('Nostr Private Key in Clipboard.', 'Never share this.');
             }
-            return {
+
+            return createClipboardItem({
                 name: 'Nostr Private Key',
                 value: text,
-                private: true
-            };
+                type: ClipboardItemType.PrivateKey
+            });
         }
 
         if (LightningAddressRegExp.test(text)) {
@@ -125,7 +126,7 @@ export class BaseClipboardService {
 
                 if (paymentItem) {
                     if (settings?.generalNotifications.lightningAddress && notify) {
-                        await window.electron.showNotification(paymentItem.merchant, paymentItem.description ?? '');
+                        await window.electron.showNotification(paymentItem.platform, paymentItem.description ?? '');
                     }
                     return paymentItem;
                 }
@@ -135,12 +136,10 @@ export class BaseClipboardService {
                 await window.electron.showNotification('Lightning Address in Clipboard', 'Lightning Address Detected.');
             }
 
-            return {
-                name: 'Lightning Address',
+            return createBolt11ClipboardItem({
                 value: text,
-                private: false,
                 ...result
-            } as Bolt11ClipboardItem;
+            });
         }
 
         return null;
@@ -148,10 +147,12 @@ export class BaseClipboardService {
 
     private static async queryPayments(value: string, serverService: ServerService): Promise<PaymentClipboardItem | null> {
         try {
-            const paymentClipboardItem = await lastValueFrom(serverService.getPayment(value));
+            const paymentClipboardItems = await lastValueFrom(serverService.getPayment(value));
 
-            paymentClipboardItem.name = paymentClipboardItem.merchant;
-            paymentClipboardItem.value = paymentClipboardItem.payment;
+            const paymentClipboardItem = paymentClipboardItems[0];
+
+            paymentClipboardItem.name = paymentClipboardItem.platform;
+            paymentClipboardItem.value = value;
 
             return paymentClipboardItem;
         } catch (error) {
