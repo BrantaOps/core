@@ -22,7 +22,7 @@ import { SettingsService } from '../../shared/services/settings.service';
 export class SettingsComponent {
     formGroup: FormGroup;
 
-    checkoutModeTooltip = 'Verify BTC/LN checkouts & invoices by sending clipboard content to Brantas Server. Requires internet.';
+    checkoutModeTooltip = 'Verify addresses by querying Branta with clipboard content. Requires internet.';
     developerModeTooltip = "Only check this if you're a developer. Enables staging environment.";
 
     BitcoinUnitTypes = Object.values(BitcoinUnitType);
@@ -101,7 +101,7 @@ export class SettingsComponent {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
             data: {
                 title: 'Turn Checkout Mode on?',
-                message: `Are you sure you want to turn Checkout Mode on? This will post bitcoin related content to Branta's server.`,
+                message: 'Are you sure you want to turn Checkout Mode on? This will query Branta with bitcoin addresses you copy.',
                 submitText: 'Confirm'
             }
         });
