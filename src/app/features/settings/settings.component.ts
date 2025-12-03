@@ -3,15 +3,15 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmationDialogComponent } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { BitcoinUnitType, ClipboardHistoryRolloffType } from '../../shared/models/settings';
 import { ClipboardService } from '../../shared/services/clipboard.service';
 import { HistoryService } from '../../shared/services/history.service';
 import { SettingsService } from '../../shared/services/settings.service';
-import { MatSelectModule } from '@angular/material/select';
-import { BitcoinUnitType, ClipboardHistoryRolloffType } from '../../shared/models/settings';
-import { MatInputModule } from '@angular/material/input';
 
 @Component({
     selector: 'app-settings',
@@ -22,12 +22,14 @@ import { MatInputModule } from '@angular/material/input';
 export class SettingsComponent {
     formGroup: FormGroup;
 
-    checkoutModeTooltip = 'Verify BTC/LN checkouts & invoices. Requires internet.';
+    checkoutModeTooltip = 'Verify addresses by querying Branta with clipboard content. Requires internet.';
     developerModeTooltip = "Only check this if you're a developer. Enables staging environment.";
 
     BitcoinUnitTypes = Object.values(BitcoinUnitType);
 
     ClipboardHistoryRolloffTypes = Object.values(ClipboardHistoryRolloffType);
+
+    private isCheckoutModeChange = false;
 
     constructor(
         private settingsService: SettingsService,
@@ -55,10 +57,15 @@ export class SettingsComponent {
         });
 
         this.formGroup.valueChanges.subscribe((settings) => {
-            this.settingsService.save(settings);
+            if (!this.isCheckoutModeChange) {
+                this.settingsService.save(settings);
+            }
+
+            this.isCheckoutModeChange = false;
         });
 
-        this.formGroup.get('checkoutMode')?.valueChanges.subscribe(() => {
+        this.formGroup.get('checkoutMode')?.valueChanges.subscribe((value) => {
+            this.handleCheckoutModeChange(value);
             this.clipboardService.rerunGetClipboardItem();
         });
 
@@ -79,6 +86,32 @@ export class SettingsComponent {
         dialogRef.afterClosed().subscribe((result) => {
             if (result === true) {
                 this.historyService.clearHistory();
+            }
+        });
+    }
+
+    private handleCheckoutModeChange(newValue: boolean): void {
+        if (!newValue) {
+            this.settingsService.save(this.formGroup.value);
+            return;
+        }
+
+        this.isCheckoutModeChange = true;
+
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            data: {
+                title: 'Turn Checkout Mode on?',
+                message: 'Are you sure you want to turn Checkout Mode on? This will query Branta with bitcoin addresses you copy.',
+                submitText: 'Confirm'
+            }
+        });
+
+        dialogRef.afterClosed().subscribe((confirmed) => {
+            if (confirmed) {
+                this.settingsService.save(this.formGroup.value);
+                this.clipboardService.rerunGetClipboardItem();
+            } else {
+                this.formGroup.get('checkoutMode')?.setValue(false, { emitEvent: false });
             }
         });
     }
