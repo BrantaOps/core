@@ -10,6 +10,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ExpandableTextComponent } from '../../../shared/components/expandable-text/expandable-text.component';
 import { CanComponentDeactivate } from '../../../shared/interfaces/can-deactivate.interface';
 import { Address } from '../../../shared/models/address';
 import { Icon, IconOption, iconOptions } from '../../../shared/models/icon';
@@ -37,7 +38,8 @@ interface AddressConfirmed {
         MatSelectModule,
         MatTabsModule,
         MatStepperModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        ExpandableTextComponent
     ],
     templateUrl: './wallet-form.component.html',
     styleUrl: './wallet-form.component.scss'

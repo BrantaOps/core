@@ -5,7 +5,7 @@
             <div class="item">
                 <div class="details-container">
                     <div class="text">
-                        <app-expandable-text [text]="item.value" />
+                        <app-expandable-text [text]="item.value" [isAddress]="true" />
                     </div>
                     @if (isAddressClipboardItem(item) && item.wallet) {
                         <div class="details">

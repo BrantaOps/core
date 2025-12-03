@@ -99,12 +99,7 @@
                 <div class="title">Confirm address 0:</div>
                 <div class="addresses">
                     @for (address of addresses; track address) {
-                        <div class="address">
-                            <div class="value">
-                                <span class="prefix">{{ address.prefix }}</span>
-                                <span class="remainder">{{ address.remainder }}</span>
-                            </div>
-                        </div>
+                      <app-expandable-text [text]="address.value" [isAddress]="true"/>
                     }
                 </div>
                 <div class="or">OR</div>
