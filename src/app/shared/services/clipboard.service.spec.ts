@@ -20,7 +20,7 @@ var serverServiceMock = {
     getPayment: (value: string) => {
         if (['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', lnbc[0]].includes(value)) {
             return of({
-                destinations: [{ value: 'Payment' }],
+                destinations: [{ value }],
                 platform: 'Branta'
             } as PaymentClipboardItem);
         }
@@ -143,11 +143,11 @@ describe('ClipboardService getClipboardItem', () => {
     });
 
     test.each([
-        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', true, true, 'Payment', 1],
-        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', false, true, undefined, 1],
-        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', true, false, 'Payment', 0],
-        ['1HD1cVCJ5ZTgF6Txxxxxxxxxxxxxxxxxxz', true, true, undefined, 1]
-    ])('Payment: %s', async (address: string, checkoutMode: boolean, notify: boolean, paymentValue: string | undefined, notificationCount: number) => {
+        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', true, true, 1],
+        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', false, true, 1],
+        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', true, false, 0],
+        ['1HD1cVCJ5ZTgF6Txxxxxxxxxxxxxxxxxxz', true, true, 1]
+    ])('Payment: %s', async (address: string, checkoutMode: boolean, notify: boolean, notificationCount: number) => {
         const showNotificationMock = jest.spyOn(window.electron, 'showNotification').mockResolvedValue();
 
         var result = (await BaseClipboardService.getClipboardItem(
@@ -165,7 +165,7 @@ describe('ClipboardService getClipboardItem', () => {
         )) as PaymentClipboardItem;
 
         expect(showNotificationMock).toHaveBeenCalledTimes(notificationCount);
-        expect(result?.destinations[0].value).toBe(paymentValue);
+        expect(result?.value).toBe(address);
     });
 
     test.each([
@@ -226,9 +226,9 @@ describe('ClipboardService getClipboardItem', () => {
             undefined,
             0
         ],
-        ['Lightning address on payment server should show default when checkout is off.', lnbc[0], false, true, true, undefined, 1],
-        ['Lightning address on payment server should show payment when checkout is on.', lnbc[0], true, true, true, 'Payment', 1],
-        ['Lightning address not on payment server should not show payment when checkout is on.', lnbc[1], true, true, true, undefined, 1]
+        ['Lightning address on payment server should show default when checkout is off.', lnbc[0], false, true, true, lnbc[0], 1],
+        ['Lightning address on payment server should show payment when checkout is on.', lnbc[0], true, true, true, lnbc[0], 1],
+        ['Lightning address not on payment server should not show payment when checkout is on.', lnbc[1], true, true, true, lnbc[1], 1]
     ])(
         'Lightning: %s',
         async (
@@ -257,7 +257,7 @@ describe('ClipboardService getClipboardItem', () => {
             )) as PaymentClipboardItem;
 
             expect(showNotificationMock).toHaveBeenCalledTimes(notificationCount);
-            expect(result?.destinations[0].value).toBe(paymentValue);
+            expect(result?.value).toBe(paymentValue);
         }
     );
 });
