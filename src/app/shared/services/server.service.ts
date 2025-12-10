@@ -25,6 +25,6 @@ export class ServerService {
 
         const subdomain = this.settingsService.settings().developerMode ? 'staging' : 'guardrail';
 
-        return `https://${subdomain}.branta.pro/v2`;
+        return `https://${subdomain}.branta.pro`;
     }
 }
