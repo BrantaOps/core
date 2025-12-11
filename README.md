@@ -6,7 +6,7 @@
   </picture>
 </p>
 
-Branta Core is a cross-platform desktop application that helps prevent address swaps by knotifying you of Bitcoin/Nostr related content in your clipboard.
+Branta Core is a cross-platform desktop application that helps prevent address swaps by notifying you of Bitcoin/Nostr related content in your clipboard.
 
 Release binaries and additional information are available at https://branta.pro/core and directly from [GitHub](https://github.com/BrantaOps/core/releases).
 Read more on our <a href="https://developer.branta.pro/branta-core" target="_blank">documentation site</a>.
@@ -25,24 +25,29 @@ Read more on our <a href="https://developer.branta.pro/branta-core" target="_bla
 2. Npm (>=10)
 
 ### Clone the Repository
+
 ```
 git clone https://github.com/BrantaOps/core.git
 ```
 
 ### Install npm packages
+
 ```
 npm install
 ```
 
 ## Running
-Running the app requirees both the frontend and backend to be ran simultaneously 
+
+Running the app requirees both the frontend and backend to be ran simultaneously
 
 Angular frontend
+
 ```
 npm run ng:serve
 ```
 
 Electron backend
+
 ```
 npm start
 ```
