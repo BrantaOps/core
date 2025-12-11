@@ -1,3 +1,12 @@
+### Building Release
+```
+rm -rf node_modules/
+rm -rf build/
+npm i npm install --save-dev @electron-forge/maker-dmg electron-builder
+TEAM_ID=___ APPLE_PASSWORD=______ APPLE_ID=________ npm run make
+```
+
+
 ### Running Locally: Mac
 
 ##### Starting the client & server:
