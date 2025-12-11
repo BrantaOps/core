@@ -196,7 +196,7 @@ function createWindow() {
 
         if (!process.argv.includes('headless')) {
             mainWindow.show();
-            processUrl(mainWindow, process.argv);
+            // processUrl(mainWindow, process.argv);
         }
 
         kickoffClipboard();
@@ -229,7 +229,7 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (process.platform == 'linux' ||
     process.platform === 'darwin') {
     app.on('open-url', (event, url) => {
-        processUrl(mainWindow, [url]);
+        // processUrl(mainWindow, [url]);
     });
 }
 
@@ -242,7 +242,7 @@ if (!gotTheLock) {
             if (mainWindow.isMinimized()) mainWindow.restore();
             mainWindow.show();
             mainWindow.focus();
-            processUrl(mainWindow, _commandLine);
+            // processUrl(mainWindow, _commandLine);
         }
     });
 
