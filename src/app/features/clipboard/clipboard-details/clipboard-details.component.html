@@ -39,7 +39,10 @@
                 </div>
                 <div class="item">
                     <div class="title">Platform:</div>
-                    <div class="value">{{ clipboardItem.platform }}</div>
+                    <div class="value flex-row">
+                      <img [src]="clipboardItem.platformLogoUrl" height="30" />
+                      <div>{{ clipboardItem.platform }}</div>
+                    </div>
                 </div>
                 <div class="item">
                     <div class="title">Description:</div>
