@@ -8,13 +8,11 @@
 
 Branta Core is a cross-platform desktop application that helps prevent address swaps by knotifying you of Bitcoin/Nostr related content in your clipboard.
 
-More information (and release binaries) can be found at https://branta.pro/core. Release binaries are also available directly from [GitHub](https://github.com/BrantaOps/core/releases).
-
-<p style="color: #B15E4A">
-Disclaimer: This is pre-release software and may contain bugs or incomplete features. Use at your own risk. Feedback and contributions are welcome!
-</p>
-
+Release binaries and additional information are available at https://branta.pro/core and directly from [GitHub](https://github.com/BrantaOps/core/releases).
 Read more on our <a href="https://developer.branta.pro/branta-core" target="_blank">documentation site</a>.
+
+> [!WARNING]
+> This is pre-release software and may contain bugs or incomplete features. Use at your own risk. Feedback and contributions are welcome!
 
 <img width="500" src="https://github.com/user-attachments/assets/5029ec64-5ae6-4134-bbe4-25e53b5473c9" />
 <img width="500" src="https://github.com/user-attachments/assets/4750bb8a-27da-4fbe-bb22-94ca1882036b" />
