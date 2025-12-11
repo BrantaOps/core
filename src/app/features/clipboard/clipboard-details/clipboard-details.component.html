@@ -44,10 +44,12 @@
                       <div>{{ clipboardItem.platform }}</div>
                     </div>
                 </div>
-                <div class="item">
-                    <div class="title">Description:</div>
-                    <div class="value">{{ clipboardItem.description }}</div>
-                </div>
+                @if (clipboardItem.description && clipboardItem.description.length > 0) {
+                  <div class="item">
+                      <div class="title">Description:</div>
+                      <div class="value">{{ clipboardItem.description }}</div>
+                  </div>
+                }
                 <div class="unexpected">
                     <button mat-button color="accent" (click)="onShareFeedback()">Unexpected?</button>
                 </div>
