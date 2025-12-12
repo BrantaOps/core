@@ -6,39 +6,75 @@
   </picture>
 </p>
 
-Disclaimer: This is pre-release software and may contain bugs or incomplete features. Use at your own risk. Feedback and contributions are welcome!
+Branta Core is a cross-platform desktop application that helps prevent address swaps by notifying you of Bitcoin/Nostr related content in your clipboard.
 
+Release binaries and additional information are available at https://branta.pro/core and directly from [GitHub](https://github.com/BrantaOps/core/releases).
 Read more on our <a href="https://developer.branta.pro/branta-core" target="_blank">documentation site</a>.
+
+> [!WARNING]
+> This is pre-release software and may contain bugs or incomplete features. Use at your own risk. Feedback and contributions are welcome!
 
 <img width="500" src="https://github.com/user-attachments/assets/5029ec64-5ae6-4134-bbe4-25e53b5473c9" />
 <img width="500" src="https://github.com/user-attachments/assets/4750bb8a-27da-4fbe-bb22-94ca1882036b" />
 
+## Setup
 
+### Prerequisites
 
-## Feature Set
-- [X] Linux, Mac & Windows builds
-- [X] Instant Clipboard alerts for Bitcoin & Lightning
-- [X] Instant Clipboard alerts for NOSTR
-- [X] Optional clipboard history
-- [X] `P2TR` Wallets
-- [X] `P2WPKH` Wallets
-- [X] `P2WSH` Multisig Wallets
-- [X] Zero analytics
-- [X] Zero default network traffic
-- [X] Change & Receive account clipboard alerts
-- [X] Testnet support
-- [ ] NOSTR preferences sync
-- [X] BOLT 11 parsing
-- [ ] Mobile Support
+1. Node (>=22)
+2. Npm (>=10)
 
-## Download
+### Clone the Repository
 
-<a href="https://snapcraft.io/branta" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://snapcraft.io/static/images/badges/en/snap-store-black.svg">
-    <source media="(prefers-color-scheme: light)" srcset="https://snapcraft.io/static/images/badges/en/snap-store-white.svg">
-    <img alt="Get it from the Snap Store" src="Branta/Assets/goldblackcropped.jpg">
-  </picture>
-</a>
+```
+git clone https://github.com/BrantaOps/core.git
+```
 
-[![branta](https://snapcraft.io/branta/badge.svg)](https://snapcraft.io/branta)
+### Install npm packages
+
+```
+npm install
+```
+
+## Running
+
+Running the app requirees both the frontend and backend to be ran simultaneously
+
+Angular frontend
+
+```
+npm run ng:serve
+```
+
+Electron backend
+
+```
+npm start
+```
+
+## Packaging
+
+- Update `package.json` version
+- `npm run build`
+- `npm run package`
+
+### Windows
+
+- Open `installers/windows/windows.sln` in Visual Studio
+- Update `Package.wxs` version
+- Update Solution Configruation option in toolbar from Debug to Release
+- Build the solution
+- MSI file can be found at `installers/windows/Branta.Wix/bin/x64/Release/en-US/Branta.Wix.msi`
+- Update the name to match the version `branta-x.x.x.msi`
+
+### Linux
+
+TODO
+
+### Mac
+
+TODO
+
+## Reporting Issues
+
+Please use the [Issues](https://github.com/BrantaOps/core/issues) tab above to report an issue.
