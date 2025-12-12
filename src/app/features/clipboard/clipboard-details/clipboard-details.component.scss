@@ -48,6 +48,12 @@
                         background: $warn-color;
                     }
                 }
+
+                &.flex-row {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                }
             }
         }
 

@@ -1,7 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { ClipboardItem } from '../models/clipboard-item';
-import { Settings } from '../models/settings';
 import { Vault } from '../models/vault.model';
 import { Wallet } from '../models/wallet.model';
 import { ServerService } from './server.service';
@@ -51,7 +50,14 @@ export class ClipboardService extends BaseClipboardService {
 
     public async rerunGetClipboardItem(notify: boolean = false): Promise<void> {
         this.clipboardItem.next(
-            await ClipboardService.getClipboardItem(this._clipboardText, notify, this._vaults, this._wallets, this.settingsService.settings(), this.serverService)
+            await ClipboardService.getClipboardItem(
+                this._clipboardText.trim(),
+                notify,
+                this._vaults,
+                this._wallets,
+                this.settingsService.settings(),
+                this.serverService
+            )
         );
     }
 }

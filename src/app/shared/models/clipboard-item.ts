@@ -32,6 +32,7 @@ export interface PaymentClipboardItem extends ClipboardItem {
     destinations: PaymentDestination[];
     platform: string;
     description: string | null;
+    platformLogoUrl: string;
 }
 
 export interface Bolt11ClipboardItem extends ClipboardItem, Bolt11Details {}
