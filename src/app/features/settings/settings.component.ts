@@ -22,14 +22,11 @@ import { SettingsService } from '../../shared/services/settings.service';
 export class SettingsComponent {
     formGroup: FormGroup;
 
-    checkoutModeTooltip = 'Verify addresses by querying Branta with clipboard content. Requires internet.';
     developerModeTooltip = "Only check this if you're a developer. Enables staging environment.";
 
     BitcoinUnitTypes = Object.values(BitcoinUnitType);
 
     ClipboardHistoryRolloffTypes = Object.values(ClipboardHistoryRolloffType);
-
-    private isCheckoutModeChange = false;
 
     constructor(
         private settingsService: SettingsService,
@@ -40,7 +37,6 @@ export class SettingsComponent {
         const settings = settingsService.settings();
 
         this.formGroup = new FormGroup({
-            checkoutMode: new FormControl(settings.checkoutMode),
             bitcoinUnitType: new FormControl(settings.bitcoinUnitType),
             generalNotifications: new FormGroup({
                 bitcoinAddress: new FormControl(settings.generalNotifications.bitcoinAddress),
@@ -54,19 +50,6 @@ export class SettingsComponent {
                 rolloffType: new FormControl(settings.clipboardHistory.rolloffType)
             }),
             developerMode: new FormControl(settings.developerMode)
-        });
-
-        this.formGroup.valueChanges.subscribe((settings) => {
-            if (!this.isCheckoutModeChange) {
-                this.settingsService.save(settings);
-            }
-
-            this.isCheckoutModeChange = false;
-        });
-
-        this.formGroup.get('checkoutMode')?.valueChanges.subscribe((value) => {
-            this.handleCheckoutModeChange(value);
-            this.clipboardService.rerunGetClipboardItem();
         });
 
         this.formGroup.get('developerMode')?.valueChanges.subscribe(() => {
@@ -86,32 +69,6 @@ export class SettingsComponent {
         dialogRef.afterClosed().subscribe((result) => {
             if (result === true) {
                 this.historyService.clearHistory();
-            }
-        });
-    }
-
-    private handleCheckoutModeChange(newValue: boolean): void {
-        if (!newValue) {
-            this.settingsService.save(this.formGroup.value);
-            return;
-        }
-
-        this.isCheckoutModeChange = true;
-
-        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-            data: {
-                title: 'Turn Checkout Mode on?',
-                message: 'Are you sure you want to turn Checkout Mode on? This will query Branta with bitcoin addresses you copy.',
-                submitText: 'Confirm'
-            }
-        });
-
-        dialogRef.afterClosed().subscribe((confirmed) => {
-            if (confirmed) {
-                this.settingsService.save(this.formGroup.value);
-                this.clipboardService.rerunGetClipboardItem();
-            } else {
-                this.formGroup.get('checkoutMode')?.setValue(false, { emitEvent: false });
             }
         });
     }

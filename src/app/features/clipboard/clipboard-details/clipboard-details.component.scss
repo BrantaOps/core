@@ -75,3 +75,11 @@
 .value {
     word-break: break-all;
 }
+
+.verify-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
+}

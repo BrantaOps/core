@@ -79,4 +79,10 @@
             <div class="default">No Bitcoin/Nostr content detected.</div>
         }
     </div>
+    @if (clipboardItem && !isPaymentClipboardItem(clipboardItem)) {
+        <div class="verify-container">
+            <button mat-button color="primary" (click)="onVerify()">Verify with Branta Guardrail</button>
+            <mat-icon class="icon material-symbols-outlined" color="primary" [matTooltip]="verifyTooltip">info</mat-icon>
+        </div>
+    }
 </div>

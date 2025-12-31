@@ -6,7 +6,6 @@ import { BitcoinUnitType, ClipboardHistoryRolloffType, Settings } from '../model
 })
 export class SettingsService {
     defaultSettings: Settings = {
-        checkoutMode: false,
         bitcoinUnitType: BitcoinUnitType.Sats,
         developerMode: false,
         clipboardHistory: {
