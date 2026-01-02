@@ -56,18 +56,6 @@ export class BaseClipboardService {
             }
             // Didn't find the users wallet
             else {
-                if (settings?.checkoutMode) {
-                    const paymentItem = await this.queryPayments(text, serverService);
-
-                    if (paymentItem) {
-                        if (notify) {
-                            await window.electron.showNotification(paymentItem.platform, paymentItem.description ?? '');
-                        }
-
-                        return paymentItem;
-                    }
-                }
-
                 if (settings?.generalNotifications.bitcoinAddress && notify) {
                     await window.electron.showNotification('New Bitcoin Address in Clipboard', 'Bitcoin Address Detected.');
                 }
@@ -121,17 +109,6 @@ export class BaseClipboardService {
                 return null;
             }
 
-            if (settings?.checkoutMode) {
-                const paymentItem = await this.queryPayments(text, serverService);
-
-                if (paymentItem) {
-                    if (settings?.generalNotifications.lightningAddress && notify) {
-                        await window.electron.showNotification(paymentItem.platform, paymentItem.description ?? '');
-                    }
-                    return paymentItem;
-                }
-            }
-
             if (settings?.generalNotifications.lightningAddress && notify) {
                 await window.electron.showNotification('Lightning Address in Clipboard', 'Lightning Address Detected.');
             }
@@ -145,18 +122,4 @@ export class BaseClipboardService {
         return null;
     }
 
-    private static async queryPayments(value: string, serverService: ServerService): Promise<PaymentClipboardItem | null> {
-        try {
-            const paymentClipboardItems = await lastValueFrom(serverService.getPayment(value));
-
-            const paymentClipboardItem = paymentClipboardItems[0];
-
-            paymentClipboardItem.name = paymentClipboardItem.platform;
-            paymentClipboardItem.value = value;
-
-            return paymentClipboardItem;
-        } catch (error) {
-            return null;
-        }
-    }
 }

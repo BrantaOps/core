@@ -1,5 +1,4 @@
 export interface Settings {
-    checkoutMode: boolean;
     developerMode: boolean;
     generalNotifications: GeneralNotifications;
     clipboardHistory: ClipboardHistory;
