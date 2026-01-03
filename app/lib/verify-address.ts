@@ -42,13 +42,8 @@ export function getAllAddresses(wallet: Wallet, i: number): Address[] {
     }
 }
 
-
-function getNetwork(wallet: Wallet) {
-    return (wallet.keys[0].value.startsWith('tpub')) ? bitcoin.networks.testnet : bitcoin.networks.bitcoin;
-}
-
 function getSingleSigAddress(wallet: Wallet, account: number, i: number, type: AddressType, bip32: any): string {
-    const network = getNetwork(wallet);
+    const network = bitcoin.networks.bitcoin;
 
     const pubkey = toHex(wallet.keys[0], account, i, bip32);
 
@@ -74,7 +69,7 @@ function getSingleSigAddress(wallet: Wallet, account: number, i: number, type: A
 }
 
 function getMultiSigAddress(wallet: Wallet, account: number, i: number, type: AddressType, bip32: any): string {
-    const network = getNetwork(wallet);
+    const network = bitcoin.networks.bitcoin;
 
     var pubkeys = wallet.keys
         .map((key) => toHex(key, account, i, bip32))
