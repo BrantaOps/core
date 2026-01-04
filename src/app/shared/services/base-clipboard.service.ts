@@ -24,7 +24,7 @@ export class BaseClipboardService {
     ): Promise<ClipboardItem | null> {
         if (text == '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa') {
             if (settings?.generalNotifications.bitcoinAddress && notify) {
-                await window.electron.showNotification('Bitcoin genesis block address copied.', 'We are all Satoshi');
+                await window.electron.showNotification('Clipboard: Bitcoin genesis block address', 'We are all Satoshi');
             }
 
             return createAddressClipboardItem({
@@ -38,7 +38,7 @@ export class BaseClipboardService {
 
             if (vault) {
                 if (settings?.generalNotifications.bitcoinAddress && notify) {
-                    await window.electron.showNotification('BTC address: ' + vault.wallet?.name, 'Derivation: ' + vault.derivationPath);
+                    await window.electron.showNotification(`Clipboard: Valut Match - ${vault.wallet?.name}`, ` ${BaseClipboardService.getAddressText(text)} (Derivation ${vault.derivationPath})`);
                 }
 
                 return vault;
@@ -49,7 +49,7 @@ export class BaseClipboardService {
             // Found the users wallet
             if (wallet) {
                 if (settings?.generalNotifications.bitcoinAddress && notify) {
-                    await window.electron.showNotification('BTC address: ' + wallet.wallet?.name, 'Derivation: ' + wallet.derivationPath);
+                    await window.electron.showNotification(`Clipboard: Wallet Match - ${wallet.wallet?.name}`, ` ${BaseClipboardService.getAddressText(text)} (Derivation ${wallet.derivationPath})`);
                 }
 
                 return wallet;
@@ -57,7 +57,7 @@ export class BaseClipboardService {
             // Didn't find the users wallet
             else {
                 if (settings?.generalNotifications.bitcoinAddress && notify) {
-                    await window.electron.showNotification('New Bitcoin Address in Clipboard', 'Bitcoin Address Detected.');
+                    await window.electron.showNotification('Clipboard: Unknown Bitcoin Address', BaseClipboardService.getAddressText(text));
                 }
 
                 return createAddressClipboardItem({
@@ -68,7 +68,7 @@ export class BaseClipboardService {
 
         if (ExtendedKeyRegExp.test(text)) {
             if (settings?.generalNotifications.bitcoinPublicKey && notify) {
-                await window.electron.showNotification('Bitcoin Extended Public Key in Clipboard.', 'Sharing can lead to loss of privacy.');
+                await window.electron.showNotification('Clipboard: Bitcoin Extended Public Key', 'Sharing can lead to loss of privacy.');
             }
 
             return createClipboardItem({
@@ -80,7 +80,7 @@ export class BaseClipboardService {
 
         if (NostrPubKeyRegExp.test(text)) {
             if (settings?.generalNotifications.nostrPublicKey && notify) {
-                await window.electron.showNotification('Nostr Public Key in Clipboard.', text);
+                await window.electron.showNotification('Clipboard: Nostr Public Key', text);
             }
 
             return createClipboardItem({
@@ -92,7 +92,7 @@ export class BaseClipboardService {
 
         if (NostrPrivateKeyRegExp.test(text)) {
             if (settings?.generalNotifications.nostrPrivateKey && notify) {
-                await window.electron.showNotification('Nostr Private Key in Clipboard.', 'Never share this.');
+                await window.electron.showNotification('Clipboard: Nostr Private Key', 'Never share this.');
             }
 
             return createClipboardItem({
@@ -110,7 +110,7 @@ export class BaseClipboardService {
             }
 
             if (settings?.generalNotifications.lightningAddress && notify) {
-                await window.electron.showNotification('Lightning Address in Clipboard', 'Lightning Address Detected.');
+                await window.electron.showNotification('Clipboard: Lightning Address', 'Lightning Address Detected.');
             }
 
             return createBolt11ClipboardItem({
@@ -122,4 +122,7 @@ export class BaseClipboardService {
         return null;
     }
 
+    private static getAddressText(text: string) : string {
+        return `${text.substring(0, 6)}...${text.substring(text.length - 5)}`
+    }
 }
