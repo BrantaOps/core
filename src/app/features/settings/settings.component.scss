@@ -3,7 +3,7 @@
 :host {
     height: 100%;
     width: 100%;
-    max-width: 600px;
+    max-width: 900px;
     display: flex;
 }
 
@@ -29,6 +29,8 @@
             .title {
                 font-size: 18px;
                 margin-bottom: 15px;
+                padding-bottom: 5px;
+                border-bottom: 1px solid $border-color;
             }
 
             .option {
