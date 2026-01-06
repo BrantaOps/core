@@ -27,10 +27,6 @@ export class ClipboardDetailsComponent extends BaseClipboardComponent {
         super();
     }
 
-    onShareFeedback(): void {
-        window.electron.openUrl('https://branta.pro');
-    }
-
     onVerify(): void {
         (async () => {
             var result = await this.queryPayments(this.clipboardItem?.value ?? "")
