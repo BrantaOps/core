@@ -1,5 +1,5 @@
 <div class="container">
-    <app-clipboard-details [clipboardItem]="clipboardItem"></app-clipboard-details>
+    <app-clipboard-details [(clipboardItem)]="clipboardItem"></app-clipboard-details>
     @if (showHistory) {
         <app-clipboard-history [history]="history" [clipboardContent]="clipboardItem?.value"></app-clipboard-history>
     }

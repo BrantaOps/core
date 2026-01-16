@@ -62,16 +62,17 @@
             justify-content: center;
             color: $text-gray;
         }
-
-        .unexpected {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            margin-bottom: -15px;
-        }
     }
 }
 
 .value {
     word-break: break-all;
+}
+
+.verify-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
 }

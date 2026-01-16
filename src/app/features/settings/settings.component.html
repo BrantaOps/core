@@ -4,10 +4,6 @@
             <div class="section">
                 <div class="title">General</div>
                 <div class="option">
-                    <mat-slide-toggle formControlName="checkoutMode">Checkout Mode</mat-slide-toggle>
-                    <mat-icon class="icon material-symbols-outlined" [matTooltip]="checkoutModeTooltip" matTooltipPosition="right">help</mat-icon>
-                </div>
-                <div class="option">
                     <mat-form-field>
                         <mat-label>Bitcoin Unit</mat-label>
                         <mat-select formControlName="bitcoinUnitType">
@@ -54,6 +50,7 @@
                 <button mat-button color="warn" (click)="onClearHistory()">Clear History</button>
             </div>
             <div class="section">
+                <div class="title">Extras</div>
                 <div class="option">
                     <mat-slide-toggle formControlName="developerMode">Developer Mode</mat-slide-toggle>
                     <mat-icon class="icon material-symbols-outlined" [matTooltip]="developerModeTooltip" matTooltipPosition="right">help</mat-icon>

@@ -143,32 +143,6 @@ describe('ClipboardService getClipboardItem', () => {
     });
 
     test.each([
-        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', true, true, 1],
-        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', false, true, 1],
-        ['1HD1cVCJ5ZTgF6Tp7a7F92qqe3945NpKtu', true, false, 0],
-        ['1HD1cVCJ5ZTgF6Txxxxxxxxxxxxxxxxxxz', true, true, 1]
-    ])('Payment: %s', async (address: string, checkoutMode: boolean, notify: boolean, notificationCount: number) => {
-        const showNotificationMock = jest.spyOn(window.electron, 'showNotification').mockResolvedValue();
-
-        var result = (await BaseClipboardService.getClipboardItem(
-            address,
-            notify,
-            [],
-            [],
-            {
-                checkoutMode,
-                generalNotifications: {
-                    bitcoinAddress: true
-                }
-            } as Settings,
-            serverServiceMock
-        )) as PaymentClipboardItem;
-
-        expect(showNotificationMock).toHaveBeenCalledTimes(notificationCount);
-        expect(result?.value).toBe(address);
-    });
-
-    test.each([
         [npub, true, true, 1],
         [npub, false, true, 0],
         [npub, true, false, 0]
@@ -222,19 +196,17 @@ describe('ClipboardService getClipboardItem', () => {
             'lnbc1pwr45dpp5q9wa3sjr4cnyvdh0wwufzldvlnm2qa5lc2sh3qkp3y',
             true,
             true,
-            true,
             undefined,
             0
         ],
-        ['Lightning address on payment server should show default when checkout is off.', lnbc[0], false, true, true, lnbc[0], 1],
-        ['Lightning address on payment server should show payment when checkout is on.', lnbc[0], true, true, true, lnbc[0], 1],
-        ['Lightning address not on payment server should not show payment when checkout is on.', lnbc[1], true, true, true, lnbc[1], 1]
+        ['Lightning address on payment server should show default when checkout is off.', lnbc[0], true, true, lnbc[0], 1],
+        ['Lightning address on payment server should show payment when checkout is on.', lnbc[0], true, true, lnbc[0], 1],
+        ['Lightning address not on payment server should not show payment when checkout is on.', lnbc[1], true, true, lnbc[1], 1]
     ])(
         'Lightning: %s',
         async (
             _testDescription: string,
             value: string,
-            checkoutMode: boolean,
             notify: boolean,
             lightningAddress: boolean,
             paymentValue: string | undefined,
@@ -248,7 +220,6 @@ describe('ClipboardService getClipboardItem', () => {
                 [],
                 [],
                 {
-                    checkoutMode,
                     generalNotifications: {
                         lightningAddress
                     }

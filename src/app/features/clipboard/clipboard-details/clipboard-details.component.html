@@ -29,9 +29,6 @@
                     <div class="title">Derivation Path:</div>
                     <div class="value">{{ clipboardItem.derivationPath }}</div>
                 </div>
-                <div class="unexpected">
-                    <button mat-button color="accent" (click)="onShareFeedback()">Unexpected?</button>
-                </div>
             } @else if (isPaymentClipboardItem(clipboardItem)) {
                 <div class="item">
                     <div class="title">Value:</div>
@@ -50,9 +47,6 @@
                       <div class="value">{{ clipboardItem.description }}</div>
                   </div>
                 }
-                <div class="unexpected">
-                    <button mat-button color="accent" (click)="onShareFeedback()">Unexpected?</button>
-                </div>
             } @else if (isBolt11ClipboardItem(clipboardItem)) {
                 <div class="item">
                     <div class="title">Value:</div>
@@ -79,4 +73,10 @@
             <div class="default">No Bitcoin/Nostr content detected.</div>
         }
     </div>
+    @if (clipboardItem && !isPaymentClipboardItem(clipboardItem)) {
+        <div class="verify-container">
+            <button mat-button color="primary" (click)="onVerify()">Verify with Branta Guardrail</button>
+            <mat-icon class="icon material-symbols-outlined" color="primary" [matTooltip]="verifyTooltip">info</mat-icon>
+        </div>
+    }
 </div>
